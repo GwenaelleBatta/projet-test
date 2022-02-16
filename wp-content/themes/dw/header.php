@@ -10,5 +10,12 @@
     <title>Wordpress</title>
 </head>
 <body>
-<h1><?php echo get_bloginfo('name');?></h1>
-<p><?php echo get_bloginfo('description');?></p>
+    <header class="header">
+        <h1 class="header__title"><?php echo get_bloginfo('name');?></h1>
+        <p class="header_tagline"><?php echo get_bloginfo('description');?></p>
+        <nav class="header__nav nav">
+            <h2 class="nav__title">Navigation principale</h2>
+            <p class="nav__placeholder">TODO...</p>
+        </nav>
+
+    </header>
