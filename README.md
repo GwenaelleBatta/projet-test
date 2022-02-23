@@ -10,3 +10,6 @@ Ce repository représente le projet de test à l'introduction de wordpress à la
 4. Configurer le fichier `wp-config.php` (et si il 'existe pas, le créer à partir de `wp-config-sample.php`)
 5. Créer une base de données.
 6. Importer le fichier `database.sql`.(mise à jour régulièrement pendant la phase de développement uniquement)
+
+##Plugings à installer
+1. ACF
