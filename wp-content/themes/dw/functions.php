@@ -12,13 +12,16 @@ register_post_type('trip',[
     'public' =>true,
     'labels'=>[
         'name'=>'Voyages',
-        'singular_name'=>'Voyage'
+        'singular_name'=>'Voyage',
     ],
     'supports' => [
         'title',
         'editor',
         'thumbnail',
-    ]
+    ],
+    'rewrite' => [
+        'slug' => 'voyages',
+    ],
 ]);
 // Récupérer les trips via une requête Wordpress
 
