@@ -13,5 +13,10 @@ register_post_type('trip',[
     'labels'=>[
         'name'=>'Voyages',
         'singular_name'=>'Voyage'
+    ],
+    'supports' => [
+        'title',
+        'editor',
+        'thumbnail',
     ]
 ]);

@@ -30,6 +30,38 @@
             <?php endif;?>
         </div>
     </section>
+	<section class="layout__trips trips">
+		<h2 class="trips__title">Mes derniers voyages</h2>
+		<div class="trips__container">
+			<?php $trips = new WP_Query([
+					//arguments
+				'post_type' => 'trip',
+				'orderby' =>'date',
+				'order'=>'DESC',
+				'posts_per_page' => 3,
+			]);?>
+			<!--Début de la boucle-->
+			<?php if ($trips->have_posts()): while ($trips->have_posts()): $trips->the_post();?>
+			<article class="trip">
+				<a href="<?=get_the_permalink()?>" class="trip__link">Lire le récit de voyage "<?= get_the_title()?>"</a>
+				<div class="trip__card">
+					<header class="trip__head">
+						<h3 class="trip__title"><?= get_the_title()?></h3>
+						<p class="trip__date"> Publier par <?=get_the_author()?> le <time class="trip__time" datetime="">XX/XX/XXXX</time></p>
+					</header>
+					<figure class="trip__fig">
+						<?= get_the_post_thumbnail(null,'medium',['class'=>'trip__thumb']);?>
+<!--						<img src="#" alt="Decription de l'image" class="trip__thumb">-->
+					</figure>
+				</div>
+			</article>
+			<!--Fin de la boucle-->
+			<?php endwhile;?>
+			<?php else:?>
+			<p class="trip__empty">Il n'y a pas de voyage à vous raconter</p>
+			<?php endif?>
+		</div>
+	</section>
 </main>
 <?php  get_footer()?>
 
