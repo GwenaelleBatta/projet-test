@@ -13,3 +13,4 @@ Ce repository représente le projet de test à l'introduction de wordpress à la
 
 ##Plugings à installer
 1. ACF
+2. Contact Form 7
