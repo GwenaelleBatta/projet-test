@@ -15,7 +15,7 @@
                                 <p class="post__meta">Publier par <?=get_the_author()?> le <time class="post__date" datetime="<?=get_the_date('c')?>"><?=get_the_date()?></time></p>
                         </header>
                                 <figure class="post__fig">
-                                    <?= get_the_post_thumbnail(null,'medium_large',['class'=>'post__thumb', 'id'=>'test']);?>
+                                    <?= get_the_post_thumbnail(null,'medium',['class'=>'post__thumb', 'id'=>'test']);?>
 <!--                                    <img src="" alt="TODO" class="post__thumb">-->
                                 </figure>
                             <div class="post__excerpt">
@@ -33,15 +33,9 @@
 	<section class="layout__trips trips">
 		<h2 class="trips__title">Mes derniers voyages</h2>
 		<div class="trips__container">
-			<?php $trips = new WP_Query([
-					//arguments
-				'post_type' => 'trip',
-				'orderby' =>'date',
-				'order'=>'DESC',
-				'posts_per_page' => 3,
-			]);?>
+			<?php //$trips = dw_get_trips(3)?>
 			<!--Début de la boucle-->
-			<?php if ($trips->have_posts()): while ($trips->have_posts()): $trips->the_post();?>
+			<?php if (($trips = dw_get_trips(3))->have_posts()): while ($trips->have_posts()): $trips->the_post();?>
 			<article class="trip">
 				<a href="<?=get_the_permalink()?>" class="trip__link">Lire le récit de voyage "<?= get_the_title()?>"</a>
 				<div class="trip__card">
