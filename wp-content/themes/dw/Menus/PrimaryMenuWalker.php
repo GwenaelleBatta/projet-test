@@ -1,5 +1,4 @@
 <?php
-
 class PrimaryMenuWalker extends Walker_Nav_Menu{
     function start_el(&$output, $item, $depth=0, $args=null, $id=0) {
         //$output = chaine de caractere qui represente de HTML gégérer jusqu'ici
