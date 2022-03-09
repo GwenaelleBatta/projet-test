@@ -1,4 +1,6 @@
 <?php
+//Charger les fichiers nécessaire
+require_once(__DIR__ . './Menus/PrimaryMenuWalker.php'); // __DIR__ constance magique représente une constante qui dit ou l'on est
 //Désactiver l'éditeur Gutenberg de Wordpress
 add_filter('use_block_editor_for_post', '__return_false');
 //Activer les images sur les articles
@@ -37,3 +39,8 @@ function dw_get_trips($count = 20){
     //2. on retourne l'objet WP_Query
     return $trips;
 }
+
+//enregistrer les zones de menu
+
+register_nav_menu('primary','Navigation principale (haut de page)');
+register_nav_menu('footer','Navigation de pied de page (bas de page)');

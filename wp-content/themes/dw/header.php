@@ -15,7 +15,11 @@
         <p class="header_tagline"><?php echo get_bloginfo('description');?></p>
         <nav class="header__nav nav">
             <h2 class="nav__title">Navigation principale</h2>
-            <p class="nav__placeholder">TODO...</p>
+            <?php wp_nav_menu(['menu' => 'primary',
+					'menu_class'=> 'nav__links',
+					'menu_id' => 'navigation',
+					'container_class'=> 'nav__container',
+					'walker'=> new PrimaryMenuWalker(),]);?> <!-- instance new (concrétisation de la recette )!= class (recette théorique -> permet de créer quelque chose)-->
         </nav>
 
     </header>
