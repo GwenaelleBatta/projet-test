@@ -23,7 +23,7 @@
 		<!-- instance new (concrétisation de la recette )!= class (recette théorique -> permet de créer quelque chose)-->
 		<ul class="nav__container">
 			<?php foreach (dw_get_menu_items('primary') as $link): ?>
-				<li class="<?=$link -> getBemClasses('nav__item')?>">
+				<li class="<?=$link->getBemClasses('nav__item');?>">
 					<a href="<?= $link->url; ?>"
 					   <?= $link ->title? 'title = "' . $link->title . '"' : '';?>
 					   class="nav__link"><?= $link->label; ?></a>

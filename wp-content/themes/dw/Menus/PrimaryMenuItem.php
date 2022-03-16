@@ -20,7 +20,7 @@ class PrimaryMenuItem
     public function hasSubItems()
     {
         //Regarder si il y a des éléments dans $this->subitems. Si c'est le cas, cet $item possède un sous-menu
-        return !empty($this->subitems);
+        return ! empty($this->subitems);
     }
 
     public function isSubItem()
