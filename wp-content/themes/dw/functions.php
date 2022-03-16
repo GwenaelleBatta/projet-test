@@ -2,6 +2,13 @@
 //Charger les fichiers nécessaire
 require_once(__DIR__ . './Menus/PrimaryMenuWalker.php'); // __DIR__ constance magique représente une constante qui dit ou l'on est
 require_once(__DIR__ . './Menus/PrimaryMenuItem.php'); // __DIR__ constance magique représente une constante qui dit ou l'on est
+//Lancer la session php pour pouvoir passer des variables de page en page
+add_action('init', 'dw_start_session',1);
+function dw_start_session(){
+    if (!session_id()){
+        session_start();
+    }
+}
 //Désactiver l'éditeur Gutenberg de Wordpress
 add_filter('use_block_editor_for_post', '__return_false');
 //Activer les images sur les articles
@@ -106,14 +113,24 @@ add_action('admin_post_submit_contact_form', 'dw_handle_submit_contact_form');
 
 function dw_handle_submit_contact_form()
 {
+    $fromController = new ContactFromController($_POST);
+    if ($fromController -> hasErrors()){
+
+    }
     $nonce = $_POST['_wpnonce'];
     if (!wp_verify_nonce($nonce, 'nonce_submit_contact')) {
-        //TODO : retourner un message d'erreur "not authorized".
+        die('Unauthorized.');
     }
     $data = dw_sanitize_contact_form_data();
     if ($errors = dw_validate_contact_form_data($data)) {
-        //pas OK
-        return $errors;
+        //pas OK, On place les erreurs de validation dans la session
+       $_SESSION['contact_form_feedback'] = [
+           'success' => false,
+           'data' => $data,
+            'errors' => $errors
+       ];
+       //On redirige l'utilisateur vers le formulaire pour y afficher le feedback d'erreurs.
+       return wp_safe_redirect($_POST['_wp_http_reference'] . '#contact', 302);
     }
     //C'est OK
     $id = wp_insert_post(array(
@@ -127,7 +144,10 @@ function dw_handle_submit_contact_form()
     $feedback .= 'Y accéder : ' . get_edit_post_link($id);
     //Envoyer l'email à l'admin
     wp_mail(get_bloginfo('admin_email'), 'Nouveau message', $feedback);
-
+    $_SESSION['contact_form_feedback'] = [
+        'success' => false,
+    ];
+    return wp_safe_redirect($_POST['_wp_http_reference'] . '#contact', 302);
 }
 
 function dw_validate_contact_form_data($data)
@@ -166,4 +186,19 @@ function dw_sanitize_contact_form_data()
         'message' => sanitize_text_field($_POST['message']),
         'rules' => sanitize_text_field($_POST['rules'] ?? ''),
     ];
+}
+function dw_get_contact_field_value($field){
+    return $_SESSION['contact_form_feedback']['data'][$field] ?? '' ;
+}
+
+function dw_get_contact_filed_error($field)
+{
+    if (!isset($_SESSION['contact_form_feedback'])){
+        return '';
+    }
+
+   if (! $_SESSION['contact_form_feedback']['errors'][$field]?? null){
+    return '<p>Ce champs ne respecte pas: </p>';
+   }
+
 }
