@@ -17,7 +17,7 @@ register_post_type('trip', [
         'name' => 'Voyages',
         'singular_name' => 'Voyage',
     ],
-    'map_meta_cap'=> true,
+    'map_meta_cap' => true,
     'supports' => [
         'title',
         'editor',
@@ -36,7 +36,7 @@ register_post_type('message', [
     'menu_icon' => 'dashicons-buddicons-pm',
     'public' => false,
     'show_ui' => true,
-    'capabilities' =>[
+    'capabilities' => [
         'create_posts' => false,
         'edit_posts' => true,
         'read_post' => true,
@@ -73,27 +73,27 @@ function dw_get_menu_items($location)
     $items = [];
     //Récupérer le menu Wordpress pour $location
     $locations = get_nav_menu_locations();
-    if ($locations[$location] ?? false) { //locations est un tableau, location représente la clé si clé n'existe pas, pour éviter error ??-> non-null coalescing operator -> si existe pas passe à la valeur qui suit
-        $menu = $locations[$location];
-        // Récupérer tout les éléments du menu récupérer
-        $posts = wp_get_nav_menu_items($menu);
-        //Formater chaque élément dans une instance de classe personnalisée
-        //Boucler sur chaque $posts
-        foreach ($posts as $post) {
-            //Transformer le wp_post en une instance de notre classe personnalisée
-            $item = new PrimaryMenuItem($post);
-            //Ajouter cette instnce à $items OU à l'item parent si sous-menu
-            if ($item->isSubItem()) {
-                //Ajouter $item comme enfant de l'item parent.
-                foreach ($items as $parent) {
-                    if ($parent->isParentFor($item)) {
-                        $parent->addSubItem($item);
-                    }
-                }
-            } else {
-                //Ajouter au tableau d'élémnt de niveau 0.
-            }
+    if (!($locations[$location] ?? false)) {
+        return $items;
+    }//locations est un tableau, location représente la clé si clé n'existe pas, pour éviter error ??-> non-null coalescing operator -> si existe pas passe à la valeur qui suit
+    $menu = $locations[$location];
+    // Récupérer tout les éléments du menu récupérer
+    $posts = wp_get_nav_menu_items($menu);
+    //Formater chaque élément dans une instance de classe personnalisée
+    //Boucler sur chaque $posts
+    foreach ($posts as $post) {
+        //Transformer le wp_post en une instance de notre classe personnalisée
+        $item = new PrimaryMenuItem($post);
+        //Ajouter cette instnce à $items OU à l'item parent si sous-menu
+        if (!$item->isSubItem()) {
             $items[] = $item;
+            continue;
+        }
+        //Ajouter $item comme enfant de l'item parent.
+        foreach ($items as $parent) {
+            if (!$parent->isParentFor($item)) continue;
+            $parent->addSubItem($item);
+
         }
     }
     //Retourner un tableau d'éléments du menu formater
@@ -107,40 +107,63 @@ add_action('admin_post_submit_contact_form', 'dw_handle_submit_contact_form');
 function dw_handle_submit_contact_form()
 {
     $nonce = $_POST['_wpnonce'];
-    if (wp_verify_nonce($nonce, 'nonce_submit_contact')) {
-        $firstname = sanitize_text_field($_POST['firstname']);
-        $lastname = sanitize_text_field($_POST['lastname']);
-        $email = sanitize_email($_POST['email']);
-        $phone = sanitize_text_field($_POST['phone']);
-        $message = sanitize_text_field($_POST['message']);
-        $rules = sanitize_text_field($_POST['rules'] ?? '');
+    if (!wp_verify_nonce($nonce, 'nonce_submit_contact')) {
+        //TODO : retourner un message d'erreur "not authorized".
+    }
+    $data = dw_sanitize_contact_form_data();
+    if ($errors = dw_validate_contact_form_data($data)) {
+        //pas OK
+        return $errors;
+    }
+    //C'est OK
+    $id = wp_insert_post(array(
+        'post_title' => 'Message de...' . $data['firstname'] . ' ' . $data['lastname'],
+        'post_type' => 'message',
+        'post_content' => $data['message'],
+    ));
 
-        if ($firstname && $lastname && $email && $message) {
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                if ($rules === '1') {
-                    $id = wp_insert_post( array(
-                        'post_title' => 'Message de...' . $firstname . ' ' .$lastname,
-                        'post_type' => 'message',
-                        'post_content' => $message,
-                    ) );
+    //Generer un email contenant l'URL vers le post en question
+    $feedback = 'Bonjour, vous avez un nouveau message';
+    $feedback .= 'Y accéder : ' . get_edit_post_link($id);
+    //Envoyer l'email à l'admin
+    wp_mail(get_bloginfo('admin_email'), 'Nouveau message', $feedback);
 
-                    //Generer un email contenant l'URL vers le post en question
-                    $feedback = 'Bonjour, vous avez un nouveau message';
-                    $feedback .= 'Y accéder : ' . get_edit_post_link($id);
-                    //Envoyer l'email à l'admin
-                    wp_mail(get_bloginfo('admin_email'), 'Nouveau message', $feedback);
-                } else {
-                    var_dump('probleme');
-                    //TODO: retourner uen erreur de validation "règle non acceptée"
-                }
-            } else {
+}
 
-                //TODO: retourner uen erreur de validation "email non valide"
-            }
-        } else {
+function dw_validate_contact_form_data($data)
+{
+    $errors = [];
+    $required = ['firstname', 'lastname', 'email', 'message'];
+    $email = ['email'];
+    $accepted = ['rules'];
+    foreach ($data as $key => $value) {
+        if (in_array($key, $required) && !$value) {
+            $errors[$key] = 'required';
+            continue;
+        }
+        if (in_array($key, $email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[$key] = 'email';
+            continue;
 
-            //TODO: retourner une erreur de validation "champs requis"
+        }
+        if (in_array($key, $accepted) && !$value !== 1) {
+            $errors[$key] = 'accepted';
+            continue;
+
         }
     }
-    //TODO : retourner un message d'erreur "not authorized".
+
+    return $errors ?: false;
+}
+
+function dw_sanitize_contact_form_data()
+{
+    return [
+        'firstname' => sanitize_text_field($_POST['firstname']),
+        'lastname' => sanitize_text_field($_POST['lastname']),
+        'email' => sanitize_email($_POST['email']),
+        'phone ' => sanitize_text_field($_POST['phone']),
+        'message' => sanitize_text_field($_POST['message']),
+        'rules' => sanitize_text_field($_POST['rules'] ?? ''),
+    ];
 }
