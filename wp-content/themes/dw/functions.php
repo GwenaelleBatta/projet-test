@@ -3,7 +3,7 @@
 // Charger les fichiers nécessaires
 require_once(__DIR__ . '/Menus/PrimaryMenuWalker.php');
 require_once(__DIR__ . '/Menus/PrimaryMenuItem.php');
-require_once(__DIR__ . '/Forms/BaseFromController.php');
+require_once(__DIR__ . '/Forms/BaseFormController.php');
 require_once(__DIR__ . '/Forms/ContactFormController.php');
 require_once(__DIR__ . '/Forms/Sanitizers/BaseSanitizer.php');
 require_once(__DIR__ . '/Forms/Sanitizers/TextSanitizer.php');

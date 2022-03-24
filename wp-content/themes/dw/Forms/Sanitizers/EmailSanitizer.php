@@ -2,8 +2,8 @@
 
 class EmailSanitizer extends BaseSanitizer
 {
-    public function getSanitizedValue(){
+    public function getSanitizedValue()
+    {
         return sanitize_email($this->value);
     }
-
 }

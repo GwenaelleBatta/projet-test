@@ -1,6 +1,6 @@
 <?php
 
-abstract class BaseFromController
+abstract class BaseFormController
 {
     protected $data = [];
 

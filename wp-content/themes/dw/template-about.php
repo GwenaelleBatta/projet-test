@@ -9,6 +9,7 @@
         <div class="about__content">
             <?php the_content();?>
         </div>
+		<p>COUCOU</p>
     </main>
 <?php endwhile;?>
 <?php endif;?>
