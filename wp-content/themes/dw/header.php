@@ -8,6 +8,8 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Wordpress</title>
+	<link rel="stylesheet" type="text/css" href="<?=dw_mix('css/style.css') ;?>">
+	<script type="text/javascript" src="<?= dw_mix('/js/script.js') ;?>"></script>
 </head>
 <body>
 <header class="header">

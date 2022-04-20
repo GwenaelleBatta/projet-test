@@ -4,7 +4,7 @@
 !database.sql
 !package.json
 !package-lock.json
-!
+!webpack.mix.js
 
 
 !/wp-content
@@ -12,3 +12,4 @@
 !/wp-content/themes
 /wp-content/themes/*
 !/wp-content/themes/dw
+/wp-content/themes/dw/public
