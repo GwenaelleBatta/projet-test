@@ -2,6 +2,10 @@
 !.gitignore
 !README.md
 !database.sql
+!package.json
+!package-lock.json
+!
+
 
 !/wp-content
 /wp-content/*
