@@ -6,7 +6,7 @@ class EmailValidator extends BaseValidator
     {
         if(! filter_var($value, FILTER_VALIDATE_EMAIL))
         {
-            return 'Merci de fournir une adresse mail valide.';
+            return  __( 'Merci de fournir une adresse mail valide.', 'dwgwenbatta');
         }
 
         return null;

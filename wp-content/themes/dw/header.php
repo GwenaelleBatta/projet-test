@@ -7,7 +7,7 @@
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Wordpress</title>
+	<title>TODO</title>
 	<link rel="stylesheet" type="text/css" href="<?=dw_mix('css/style.css') ;?>">
 	<script type="text/javascript" src="<?= dw_mix('/js/script.js') ;?>"></script>
 </head>
@@ -16,7 +16,7 @@
 	<h1 class="header__title"><?php echo get_bloginfo('name'); ?></h1>
 	<p class="header_tagline"><?php echo get_bloginfo('description'); ?></p>
 	<nav class="header__nav nav">
-		<h2 class="nav__title">Navigation principale</h2>
+		<h2 class="nav__title"><?= __('Navigation principale', 'dwgwenbatta')?>></h2>
 		<!--            --><?php //wp_nav_menu(['menu' => 'primary',
 		//					'menu_class'=> 'nav__links',
 		//					'menu_id' => 'navigation',

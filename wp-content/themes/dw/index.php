@@ -1,7 +1,7 @@
 <?php get_header();?>
 <main class="layout">
     <section class="layout__latest latest">
-        <h2 class="latest__title">Mes derniers articles</h2>
+        <h2 class="latest__title">M<?= __('Mes derniers articles', 'dwgwenbatta')?></h2>
         <div class="letest__container">
             <?php if(have_posts()): while(have_posts()): the_post(); ?>
             <!--On est dans sle boucle-->
@@ -31,7 +31,7 @@
         </div>
     </section>
 	<section class="layout__trips trips">
-		<h2 class="trips__title">Mes derniers voyages</h2>
+		<h2 class="trips__title"><?= __('Mes derniers voyages', 'dwgwenbatta')?></h2>
 		<div class="trips__container">
 			<?php //$trips = dw_get_trips(3)?>
 			<!--Début de la boucle-->
@@ -52,7 +52,7 @@
 			<!--Fin de la boucle-->
 			<?php endwhile;?>
 			<?php else:?>
-			<p class="trip__empty">Il n'y a pas de voyage à vous raconter</p>
+			<p class="trip__empty"><?= __('Il n\'y a pas de voyage à vous raconter...', 'dwgwenbatta')?></p>
 			<?php endif?>
 		</div>
 	</section>
