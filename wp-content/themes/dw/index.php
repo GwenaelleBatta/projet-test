@@ -1,7 +1,7 @@
 <?php get_header();?>
 <main class="layout">
     <section class="layout__latest latest">
-        <h2 class="latest__title">M<?= __('Mes derniers articles', 'dwgwenbatta')?></h2>
+        <h2 class="latest__title"><?= __('Mes derniers articles', 'dwgwenbatta')?></h2>
         <div class="letest__container">
             <?php if(have_posts()): while(have_posts()): the_post(); ?>
             <!--On est dans sle boucle-->

@@ -7,5 +7,6 @@
             <p class="footer__placeholder">TODO...</p>
         </section>
     </footer>
+<?php wp_footer()?>
 </body>
 </html>
