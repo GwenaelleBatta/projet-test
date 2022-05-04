@@ -7,7 +7,18 @@
             <?= get_the_post_thumbnail(null,'medium_large',['class'=>'about__thumb']);?>
         </figure>
         <div class="about__content">
-            <?php the_content();?>
+            <section class="about__hobbies">
+				<h2><?= __('mes loisirs', 'dwgwenbatta');?></h2>
+				<div class="wysiwyg">
+					<?= get_field('hobbies');?>
+				</div>
+			</section>
+			<section class="about__hobbies">
+				<h2><?= __('Qui suis-je ?', 'dwgwenbatta');?></h2>
+				<div class="wysiwyg">
+					<?= get_field('presentation');?>
+				</div>
+			</section>
         </div>
 		<p>COUCOU</p>
     </main>

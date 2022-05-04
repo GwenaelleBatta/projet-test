@@ -1,6 +1,7 @@
 <?php
 
 // Charger les fichiers nécessaires
+require_once(__DIR__ . '/acf.php');
 require_once(__DIR__ . '/Menus/PrimaryMenuWalker.php');
 require_once(__DIR__ . '/Menus/PrimaryMenuItem.php');
 require_once(__DIR__ . '/Forms/BaseFormController.php');
