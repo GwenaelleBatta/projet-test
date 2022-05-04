@@ -15,10 +15,11 @@ require_once(__DIR__ . '/Forms/Validators/AcceptedValidator.php');
 
 
 // Lancer la sessions PHP pour pouvoir passer des variables de page en page
-add_action('init', 'dw_start_session', 1);
+add_action('init', 'dw_boot_theme', 1);
 
-function dw_start_session()
+function dw_boot_theme()
 {
+    load_theme_textdomain( 'dwwgwenbatta', __DIR__ . '/locales');
     if (!session_id()) {
         session_start();
     }
