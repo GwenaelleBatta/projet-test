@@ -20,7 +20,7 @@ add_action('init', 'dw_boot_theme', 1);
 
 function dw_boot_theme()
 {
-    load_theme_textdomain( 'dwwgwenbatta', __DIR__ . '/locales');
+    load_theme_textdomain('dwgwenbatta', __DIR__ . '/locales');
     if (!session_id()) {
         session_start();
     }
@@ -41,6 +41,7 @@ register_post_type('trip', [
     ],
     'description' => 'Tous les articles qui décrivent un voyage',
     'public' => true,
+    'has_archive'=>true,
     'menu_position' => 5,
     'menu_icon' => 'dashicons-airplane',
     'supports' => ['title', 'editor', 'thumbnail'],
@@ -67,7 +68,17 @@ register_post_type('message', [
     ],
     'map_meta_cap' => true,
 ]);
+// Register custom taxonomy
+register_taxonomy('country', ['trip'], [
+    'labels' => [
+        'name' => 'Pays',
+        'singular_name' => 'Pays'
+    ],
+    'description' => 'Tout les pays que nous avons ou visiter',
+    'public' => true,
+    'hierarchical' => true,
 
+]);
 // Récupérer les trips via une requête Wordpress
 function dw_get_trips($count = 20)
 {
@@ -81,6 +92,17 @@ function dw_get_trips($count = 20)
 
     // 2. on retourne l'objet WP_Query
     return $trips;
+}
+
+//Récupérer les termes de la taxonomie "pays
+
+function dw_get_countries()
+{
+        return get_terms([
+            'taxonomy' => 'country',
+            'hide_empty' => false,
+
+        ]);
 }
 
 // Enregistrer les zones de menus
@@ -186,7 +208,6 @@ function dw_mix($path)
         return get_stylesheet_directory_uri() . '/public' . $path;
 
     }
-
     //Recupérer le hash
     //Retourner la chemin versionné
 

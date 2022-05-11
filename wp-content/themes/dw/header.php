@@ -7,13 +7,10 @@
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>TODO</title>
+	<title><?= wp_title('-', false, 'right') . get_bloginfo('name'); ?></title>
 	<link rel="stylesheet" type="text/css" href="<?= dw_mix('css/style.css'); ?>">
-	<?php foreach (pll_the_languages(['raw' => true]) as $code => $locale):; ?>
-		<link rel="alternate" hreflang="<?= $locale['locale']; ?>" href="<?= $locale['url']; ?>">
-	<?php endforeach; ?>
 	<script type="text/javascript" src="<?= dw_mix('/js/script.js'); ?>"></script>
-<!--	--><?php //wp_head();?>
+	<?php wp_head(); ?>
 </head>
 <body>
 <header class="header">
